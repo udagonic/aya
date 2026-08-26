@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Special Dinner & Date Selection in Tennoji</title>
+  
+  <!-- Google Fonts: Cormorant Garamond, Playfair Display, Shippori Mincho, Noto Serif JP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+JP:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* カラーパレット（Luxury Dusty Rose & Champagne Gold） */
+      --bg-base: #FAF6F5;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --bg-card-inner: rgba(253, 248, 247, 0.75);
+      
+      --rose-primary: #C98A90;
+      --rose-light: #E8C5C8;
+      --rose-dark: #9F6268;
+      --dusty-rose: #DDA7A5;
+      --champagne-gold: #C5A880;
+      --gold-accent: #D4AF37;
+      
+      --text-main: #2C2527;
+      --text-sub: #5E5054;
+      --text-muted: #8E7E83;
+      
+      --border-rose: rgba(201, 138, 144, 0.25);
+      --border-gold: rgba(197, 168, 128, 0.35);
+      
+      --shadow-card: 0 12px 32px rgba(221, 167, 165, 0.14);
+      --shadow-hover: 0 18px 42px rgba(201, 138, 144, 0.24);
+      
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(at 5% 5%, rgba(232, 197, 200, 0.4) 0px, transparent 45%),
+        radial-gradient(at 95% 20%, rgba(221, 167, 165, 0.28) 0px, transparent 40%),
+        radial-gradient(at 15% 75%, rgba(245, 230, 227, 0.45) 0px, transparent 50%),
+        radial-gradient(at 85% 90%, rgba(197, 168, 128, 0.22) 0px, transparent 40%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+      font-feature-settings: "palt";
+      line-height: 1.9;
+      letter-spacing: 0.07em;
+      -webkit-font-smoothing: antialiased;
+      padding: 48px 16px 80px;
+    }
+
+    .container {
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    /* --------------------------------------
+       ヘッダーセクション
+    --------------------------------------- */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      color: var(--rose-dark);
+      background: linear-gradient(135deg, rgba(232, 197, 200, 0.4), rgba(255, 255, 255, 0.9));
+      padding: 6px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--border-rose);
+      margin-bottom: 20px;
+    }
+
+    .header-badge::before,
+    .header-badge::after {
+      content: "✦";
+      font-size: 0.72rem;
+      color: var(--champagne-gold);
+    }
+
+    .header-title {
+      font-family: 'Playfair Display', 'Shippori Mincho', serif;
+      font-size: clamp(1.75rem, 5vw, 2.35rem);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      line-height: 1.45;
+      color: var(--text-main);
+      margin-bottom: 18px;
+    }
+
+    .header-title .highlight {
+      background: linear-gradient(135deg, #A85A62 0%, #C98A90 50%, #C5A880 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 600;
+    }
+
+    .header-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 18px auto 26px;
+      width: 160px;
+    }
+
+    .header-ornament .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--dusty-rose), var(--champagne-gold), transparent);
+    }
+
+    .header-ornament .diamond {
+      width: 6px;
+      height: 6px;
+      background-color: var(--rose-primary);
+      transform: rotate(45deg);
+    }
+
+    .header-intro-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border-rose);
+      border-radius: var(--radius-md);
+      padding: 24px 28px;
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+      text-align: left;
+    }
+
+    .header-intro-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--rose-primary), var(--champagne-gold));
+    }
+
+    /* --------------------------------------
+       店舗カードセクション
+    --------------------------------------- */
+    .shops-list {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .shop-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-rose);
+      border-radius: var(--radius-lg);
+      padding: 34px 28px;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      position: relative;
+    }
+
+    .shop-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(201, 138, 144, 0.45);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed rgba(201, 138, 144, 0.32);
+    }
+
+    .card-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--rose-dark);
+      letter-spacing: 0.16em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-number span {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--rose-dark);
+    }
+
+    .card-tag {
+      font-size: 0.78rem;
+      color: #7A555B;
+      background: rgba(221, 167, 165, 0.2);
+      padding: 4px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(221, 167, 165, 0.4);
+      letter-spacing: 0.05em;
+    }
+
+    .shop-name {
+      font-size: clamp(1.3rem, 4vw, 1.55rem);
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .shop-subtitle {
+      font-size: 0.9rem;
+      color: var(--rose-dark);
+      margin-bottom: 18px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .shop-subtitle::before {
+      content: "―";
+      color: var(--champagne-gold);
+    }
+
+    /* メタバッジ（エリア・ジャンル） */
+    .shop-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .meta-pill {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      background: #FFFFFF;
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(201, 138, 144, 0.28);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .meta-pill .icon {
+      font-size: 0.85rem;
+    }
+
+    /* おすすめポイント・雰囲気 */
+    .shop-content {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+
+    .content-box {
+      background: var(--bg-card-inner);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      border-left: 3px solid var(--dusty-rose);
+    }
+
+    .content-box.highlight-box {
+      background: linear-gradient(135deg, rgba(253, 248, 247, 0.95), rgba(246, 236, 237, 0.7));
+      border-left: 3px solid var(--rose-primary);
+    }
+
+    .box-heading {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--rose-dark);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .box-text {
+      font-size: 0.93rem;
+      color: var(--text-sub);
+      line-height: 1.85;
+    }
+
+    /* ボタン・リンクエリア */
+    .shop-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 11px 16px;
+      font-size: 0.84rem;
+      text-decoration: none;
+      border-radius: 999px;
+      transition: all 0.3s ease;
+      letter-spacing: 0.04em;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    /* マップ確認ボタン */
+    .btn-map {
+      background: linear-gradient(135deg, #C98A90 0%, #DDA7A5 100%);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(201, 138, 144, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-map:hover {
+      background: linear-gradient(135deg, #9F6268 0%, #C98A90 100%);
+      box-shadow: 0 6px 18px rgba(201, 138, 144, 0.45);
+      transform: translateY(-2px);
+    }
+
+    /* 公式・食べログボタン */
+    .btn-site {
+      background: #FFFFFF;
+      color: var(--text-main);
+      border: 1px solid var(--border-rose);
+    }
+
+    .btn-site:hover {
+      background: rgba(221, 167, 165, 0.12);
+      border-color: var(--rose-primary);
+      color: var(--rose-dark);
+      transform: translateY(-2px);
+    }
+
+    /* Instagramボタン */
+    .btn-instagram {
+      background: #FFFFFF;
+      color: #9F6268;
+      border: 1px solid rgba(201, 138, 144, 0.3);
+    }
+
+    .btn-instagram:hover {
+      background: linear-gradient(135deg, rgba(232, 197, 200, 0.25), rgba(255, 255, 255, 0.8));
+      border-color: var(--rose-primary);
+      transform: translateY(-2px);
+    }
+
+    /* --------------------------------------
+       フッターセクション
+    --------------------------------------- */
+    .footer {
+      margin-top: 56px;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 38px 30px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+
+    .footer-title {
+      font-family: 'Playfair Display', 'Shippori Mincho', serif;
+      font-size: 1.25rem;
+      color: var(--rose-dark);
+      margin-bottom: 18px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+    }
+
+    .footer-message {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      line-height: 2.0;
+      margin-bottom: 24px;
+    }
+
+    .footer-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--champagne-gold);
+      margin: 20px auto;
+    }
+
+    .footer-signature {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--champagne-gold);
+      letter-spacing: 0.2em;
+    }
+
+    /* レスポンシブ対応 */
+    @media (max-width: 600px) {
+      body {
+        padding: 24px 12px 60px;
+      }
+      .shop-card {
+        padding: 26px 18px;
+        border-radius: 18px;
+      }
+      .shop-actions {
+        grid-template-columns: 1fr;
+      }
+      .header-intro-card {
+        padding: 20px 18px;
+      }
+      .footer {
+        padding: 30px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- ヒーロー / ヘッダーエリア -->
+    <header class="header">
+      <div class="header-badge">Special Dinner & Date Selection</div>
+      <h1 class="header-title">
+        天王寺で味わう、<br>
+        <span class="highlight">炊きたてのお米と美味しい夜</span>
+      </h1>
+      
+      <div class="header-ornament">
+        <div class="line"></div>
+        <div class="diamond"></div>
+        <div class="line"></div>
+      </div>
+
+      <div class="header-intro-card">
+        <p>
+          美味しいお米が食べられそうなご飯やさんをいくつか見つけてみました。<br>
+          気になるお店はありますか？ 一緒に素敵な時間を過ごせたら嬉しいです✨
+        </p>
+      </div>
+    </header>
+
+    <!-- 店舗一覧エリア -->
+    <main class="shops-list">
+
+      <!-- 候補1: 寅福 -->
+      <article class="shop-card">
+        <div class="card-top">
+          <div class="card-number">Selection <span>01</span></div>
+          <div class="card-tag">大かまど＆大羽釜炊き</div>
+        </div>
+
+        <h2 class="shop-name">寅福</h2>
+        <div class="shop-subtitle">あべのハルカスダイニング店</div>
+
+        <div class="shop-meta">
+          <div class="meta-pill">
+            <span class="icon">📍</span> 天王寺 / あべのハルカス タワー館12F
+          </div>
+          <div class="meta-pill">
+            <span class="icon">🍚</span> 大かまど飯・和食定食
+          </div>
+        </div>
+
+        <div class="shop-content">
+          <div class="content-box">
+            <div class="box-heading">
+              <span>✨</span> お店の雰囲気
+            </div>
+            <p class="box-text">
+              落ち着いた空間で、ご飯を主役にしっかりとした定食を楽しみたいときにぴったりなお店です。
+            </p>
+          </div>
+
+          <div class="content-box highlight-box">
+            <div class="box-heading">
+              <span>❤️</span> ここが素敵！
+            </div>
+            <p class="box-text">
+              新潟県長岡産のお米などを大かまどでふっくら炊き上げており、白米・雑穀ご飯・季節の炊き込みご飯の3種類がおかわり自由です！
+            </p>
+          </div>
+        </div>
+
+        <div class="shop-actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=34.6460706,135.5134771" target="_blank" rel="noopener noreferrer" class="btn btn-map">
+            📍 地図で確認
+          </a>
+          <a href="https://r.gnavi.co.jp/cgcfn5u30000/" target="_blank" rel="noopener noreferrer" class="btn btn-site">
+            🌐 ぐるなび詳細
+          </a>
+          <a href="https://www.instagram.com/torafuku_japan" target="_blank" rel="noopener noreferrer" class="btn btn-instagram">
+            📷 Instagram
+          </a>
+        </div>
+      </article>
+
+      <!-- 候補2: 花殿 / 花様 -->
+      <article class="shop-card">
+        <div class="card-top">
+          <div class="card-number">Selection <span>02</span></div>
+          <div class="card-tag">近江牛肉割烹 / 近江づくし自然派和食</div>
+        </div>
+
+        <h2 class="shop-name">花殿 ka-den / 花様 ka-you</h2>
+        <div class="shop-subtitle">天王寺MIO 本館11F</div>
+
+        <div class="shop-meta">
+          <div class="meta-pill">
+            <span class="icon">📍</span> 天王寺 / 天王寺ミオ
+          </div>
+          <div class="meta-pill">
+            <span class="icon">🥩</span> 近江牛割烹・自然派和食
+          </div>
+        </div>
+
+        <div class="shop-content">
+          <div class="content-box">
+            <div class="box-heading">
+              <span>✨</span> お店の雰囲気
+            </div>
+            <p class="box-text">
+              上質な大人のモダン空間。ゆったりと落ち着いた時間を過ごせる洗練された雰囲気が魅力です。
+            </p>
+          </div>
+
+          <div class="content-box highlight-box">
+            <div class="box-heading">
+              <span>❤️</span> ここが素敵！
+            </div>
+            <p class="box-text">
+              最高級の近江牛をはじめ、近江づくしの自然派食材とお肉がとっても美味しそうなお店です！
+            </p>
+          </div>
+        </div>
+
+        <div class="shop-actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=34.6467023,135.5143947" target="_blank" rel="noopener noreferrer" class="btn btn-map">
+            📍 地図で確認
+          </a>
+          <a href="https://www.tennoji-mio.co.jp/restaurant/detail/134" target="_blank" rel="noopener noreferrer" class="btn btn-site">
+            🌐 公式詳細
+          </a>
+          <a href="https://tabelog.com/osaka/A2701/A270203/27131893/" target="_blank" rel="noopener noreferrer" class="btn btn-site">
+            🍴 食べログ
+          </a>
+          <a href="https://www.instagram.com/kaden.mio/" target="_blank" rel="noopener noreferrer" class="btn btn-instagram">
+            📷 Instagram
+          </a>
+        </div>
+      </article>
+
+      <!-- 候補3: 龍神丸 -->
+      <article class="shop-card">
+        <div class="card-top">
+          <div class="card-number">Selection <span>03</span></div>
+          <div class="card-tag">高知料理の醍醐味！土佐わら焼き鰹</div>
+        </div>
+
+        <h2 class="shop-name">土佐わら焼き 龍神丸</h2>
+        <div class="shop-subtitle">天王寺MIO プラザ館4F</div>
+
+        <div class="shop-meta">
+          <div class="meta-pill">
+            <span class="icon">📍</span> 天王寺 / 天王寺ミオ プラザ館
+          </div>
+          <div class="meta-pill">
+            <span class="icon">🐟</span> 土佐わら焼き鰹・釜炊き銀シャリ
+          </div>
+        </div>
+
+        <div class="shop-content">
+          <div class="content-box">
+            <div class="box-heading">
+              <span>✨</span> お店の雰囲気
+            </div>
+            <p class="box-text">
+              薫り高いわら焼き鰹に負けないよう、一人一人に一釜ずつ炊き立ての美味しい銀シャリご飯を提供してくれます。
+            </p>
+          </div>
+
+          <div class="content-box highlight-box">
+            <div class="box-heading">
+              <span>❤️</span> ここが素敵！
+            </div>
+            <p class="box-text">
+              注文を受けてから1人前ずつ専用の釜でふっくら炊き上げるスタイル！格別の炊きたてご飯を味わえます。
+            </p>
+          </div>
+        </div>
+
+        <div class="shop-actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=34.64771959999999,135.5136665" target="_blank" rel="noopener noreferrer" class="btn btn-map">
+            📍 地図で確認
+          </a>
+          <a href="https://www.pierthirty.co.jp/brand.php?brand=12&shop=137" target="_blank" rel="noopener noreferrer" class="btn btn-site">
+            🌐 公式詳細
+          </a>
+          <a href="https://www.instagram.com/ryujinmaru_tennojimio/" target="_blank" rel="noopener noreferrer" class="btn btn-instagram">
+            📷 Instagram
+          </a>
+        </div>
+      </article>
+
+    </main>
+
+    <!-- フッターメッセージエリア -->
+    <footer class="footer">
+      <h3 class="footer-title">Looking Forward to Our Dinner</h3>
+      <p class="footer-message">
+        天王寺はあまり詳しくなくて、実はどのお店も初めてなんです。<br>
+        だからこそ、一緒に初めてを体験できたら嬉しいなと思っています。<br>
+        もし他に気になるところや、行ってみたいお店があればぜひ教えてくださいね。
+      </p>
+      <div class="footer-divider"></div>
+      <div class="footer-signature">Special Selection for You</div>
+    </footer>
+
+  </div>
+
+</body>
+</html>
